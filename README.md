@@ -1,10 +1,8 @@
-Description
-===========
+## Description
 
 A jQuery plugin that allows you to display images in a coverflow. Currently only works in webkit browsers.
 
-Usage
-=====
+## Usage
 
 Initialize the coverflow:
 
@@ -23,8 +21,7 @@ Use them by first assigning the coverflow call to your own variable, e.g.:
     var coverflow = $('#div').coverflow();
 	coverflow.next();
 
-Options
-=======
+## Options
 
     option: [default value] description
 
@@ -37,3 +34,10 @@ Options
     rotateDegree:    75  degree by which each cover is rotated around the y-axis
     fadeEdges:     true  true if left and right edges of coverflow should "fade", requires background to be black (#000)
     allowClick:    true  true if you want to allow clicking on non-centered covers to trigger coverflow
+
+Override the default options by passing in the parameters you wish to change in an object. For example:
+
+    $('#div').coverflow({
+	    coverWidth: 600,
+		coverHeight: 600
+	});
