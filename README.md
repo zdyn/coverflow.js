@@ -7,22 +7,20 @@ Usage
 
 Initialize the coverflow:
 
-```$('#div').coverflow();
-$('#div').coverflow({ options });```
+    $('#div').coverflow();
+    $('#div').coverflow({ options });
 
-If you want to navigate the coverflow in your own JavaScript code, assign the call to a variable:
+The following functions are provided if you want to navigate the coverflow in your own JavaScript code:
 
-var coverflow = $('#div').coverflow();
+prev:  go to the previous cover, does nothing if at first
+next:  go to the next cover, does nothing if at last
+first: go to the first cover
+last:  go to the last cover
 
-The following functions are provided:
+Use them by first assigning the coverflow call to your own variable, e.g.:
 
-prev:  go to previous cover, does nothing if at first
-next:  go to next cover, does nothing if at last
-first: go to first cover
-last:  go to last cover
-
-For example 
-
+    var coverflow = $('#div').coverflow();
+	coverflow.next();
 Options
 =======
 
