@@ -13,10 +13,10 @@ Initialize the coverflow:
 
 The following functions are provided if you want to navigate the coverflow in your own JavaScript code:
 
-prev:  go to the previous cover, does nothing if at first
-next:  go to the next cover, does nothing if at last
-first: go to the first cover
-last:  go to the last cover
+    prev:  go to the previous cover, does nothing if at first
+    next:  go to the next cover, does nothing if at last
+    first: go to the first cover
+    last:  go to the last cover
 
 Use them by first assigning the coverflow call to your own variable, e.g.:
 
