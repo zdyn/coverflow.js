@@ -2,7 +2,6 @@ Description
 ===========
 
 A jQuery plugin that allows you to display images in a coverflow. Currently only works in webkit browsers.
-
 Usage
 =====
 
