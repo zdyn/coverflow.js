@@ -6,8 +6,23 @@ A jQuery plugin that allows you to display images in a coverflow. Currently only
 Usage
 =====
 
-$('#div').coverflow();
-$('#div').coverflow({ options });
+Initialize the coverflow:
+
+```$('#div').coverflow();
+$('#div').coverflow({ options });```
+
+If you want to navigate the coverflow in your own JavaScript code, assign the call to a variable:
+
+var coverflow = $('#div').coverflow();
+
+The following functions are provided:
+
+prev:  go to previous cover, does nothing if at first
+next:  go to next cover, does nothing if at last
+first: go to first cover
+last:  go to last cover
+
+For example 
 
 Options
 =======
