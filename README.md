@@ -12,7 +12,6 @@ Initialize the coverflow. This must be done inside `$(window).load`:
 
     $(window).load(function(){
       $('#div').coverflow();
-      $('#div').coverflow({ options });
     });
 
 The following functions are provided if you want to navigate the coverflow in your own JavaScript code:
