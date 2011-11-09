@@ -1,6 +1,6 @@
 # Coverflow
 
-A jQuery plugin that allows you to display images in a coverflow. Currently works only in webkit browsers.
+A jQuery plugin that allows you to display images in a coverflow. Currently works only in webkit browsers. An demo of the plugin in action is available at http://zdyn.github.com/coverflow/.
 
 ## Prerequisites
 
