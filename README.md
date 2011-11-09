@@ -42,9 +42,9 @@ Use them by first assigning the coverflow call to your own variable, e.g.:
 Override the default options by passing in the parameters you wish to change in an object. For example:
 
     $('#div').coverflow({
-	    coverWidth: 600,
+      coverWidth: 600,
       coverHeight: 600
-	  });
+    });
 
 ## Known issues
 
