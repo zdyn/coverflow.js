@@ -2,6 +2,10 @@
 
 A jQuery plugin that allows you to display images in a coverflow. Currently works only in webkit browsers.
 
+## Prerequisites
+
+jQuery 1.7
+
 ## Usage
 
 Initialize the coverflow:
@@ -19,7 +23,7 @@ The following functions are provided if you want to navigate the coverflow in yo
 Use them by first assigning the coverflow call to your own variable, e.g.:
 
     var coverflow = $('#div').coverflow();
-	coverflow.next();
+	  coverflow.next();
 
 ## Options
 
@@ -39,5 +43,10 @@ Override the default options by passing in the parameters you wish to change in 
 
     $('#div').coverflow({
 	    coverWidth: 600,
-		coverHeight: 600
-	});
+      coverHeight: 600
+	  });
+
+## Known issues
+
+1. Using non-square dimensions for coverWidth and coverHeight results in broken click navigation
+2. At larger sizes, width for non-centered covers becomes distorted
