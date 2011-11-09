@@ -1,1 +1,35 @@
-Test
+<!DOCTYPE html>
+
+<html lang="en">
+
+	<head>
+		<link type="text/css" rel="stylesheet" href="index.css" />
+		<link type="text/css" rel="stylesheet" href="coverflow.css" />
+		
+		<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+		<script src="coverflow.js"></script>
+		
+		<script>
+			$(window).load(function(){
+				coverflow = $('#coverflow_container').coverflow({
+					coverWidth: 400,
+					coverHeight: 400
+				});
+			});
+		</script>
+	</head>
+	
+	<body>
+		<div id="coverflow_container">
+		
+			<img src="cover1.jpg" />
+			<img src="cover2.jpg" />
+			<img src="cover3.jpg" />
+			<img src="cover4.jpg" />
+			<img src="cover5.jpg" />
+			<img src="cover6.jpg" />
+			
+		</div>
+	</body>
+
+</html>
