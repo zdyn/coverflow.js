@@ -21,10 +21,10 @@ The following functions are provided if you want to navigate the coverflow in yo
     first: go to the first cover
     last:  go to the last cover
 
-Use them by first assigning the coverflow call to your own variable, e.g.:
+Use them by first assigning the coverflow call to your own variable and then calling the functions. For example:
 
     var coverflow = $('#div').coverflow();
-	  coverflow.next();
+    coverflow.next();
 
 ## Options
 
