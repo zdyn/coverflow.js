@@ -1,32 +1,29 @@
-<!DOCTYPE html>
-
-<html lang="en">
-
+<!doctype html>
+<html>
 	<head>
 		<link type="text/css" rel="stylesheet" href="index.css" />
-		<link type="text/css" rel="stylesheet" href="coverflow.css" />
-		
-		<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
-		<script src="coverflow.js"></script>
-		
-		<script>
-			$(window).load(function(){
-				coverflow = $('#coverflow_container').coverflow();
-			});
-		</script>
+		<link type="text/css" rel="stylesheet" href="src/coverflow.css" />
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+		<script src="src/coverflow.js"></script>
 	</head>
-	
 	<body>
-		<div id="coverflow_container">
-		
+		<div id="coverflow">
 			<img src="cover1.jpg" />
 			<img src="cover2.jpg" />
 			<img src="cover3.jpg" />
 			<img src="cover4.jpg" />
 			<img src="cover5.jpg" />
 			<img src="cover6.jpg" />
-			
 		</div>
+		<script>
+			$("#coverflow").coverflow({
+				coverWidth: 300,
+				coverHeight: 300,
+				readyFn: function() {
+					$("#coverflow").show();
+				}
+			});
+		</script>
 	</body>
-
 </html>

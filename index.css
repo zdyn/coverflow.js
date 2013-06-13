@@ -3,8 +3,12 @@ html, body {
 	width: 100%;
 	margin: 0;
 	padding: 0;
+  background: #1b1b1b;
 }
-#coverflow_container {
-	height: 100%;
-	background: #000;
+#coverflow {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+	height: 600px;
+  margin-top: -300px;
 }

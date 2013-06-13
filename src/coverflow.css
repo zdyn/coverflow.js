@@ -1,32 +1,43 @@
-/* COVERFLOW CSS */
-
-.zd_cover {
+.coverflow {
+	-webkit-perspective: 500px;
+}
+.cover {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	text-align: center;
-	-webkit-transition-property: margin-top, margin-left, width, height, -webkit-transform, z-index;
-	-webkit-transition-duration: .3s, .3s, .3s, .3s, .3s, .15s;
-	-webkit-box-reflect: below 0 -webkit-linear-gradient(top, transparent, rgba(255, 255, 255, .6));
+	background: #000;
+	-webkit-user-select: none;
 	user-select: none;
+	-webkit-transition-property: margin-left, margin-top, -webkit-transform;
+	-webkit-transition-duration: .4s, .4s, .4s;
+	-webkit-transform-style: preserve-3d;
 }
-.zd_cover > img {
-	position: absolute;
-	bottom: 0;
+.cover > img {
+	width: 100%;
 	margin: 0;
-	vertical-align: bottom;
+	vertical-align: top;
+	-webkit-box-reflect: below 0 -webkit-linear-gradient(top, transparent, rgba(255, 255, 255, .5));
 }
-.zd_grad {
+.cover-gradient {
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	opacity: 1;
+	width: 50%;
+	z-index: 1000;
 }
-.zd_grad_l {
+.cover-gradient-left {
 	left: 0;
-	background: -webkit-linear-gradient(left, #000, transparent);
+	background: -webkit-linear-gradient(left, #222, transparent);
+	background: -moz-linear-gradient(left, #222, transparent);
+	background: -o-linear-gradient(left, #222, transparent);
+	background: -ms-linear-gradient(left, #222, transparent);
+	background: linear-gradient(left, #222, transparent);
 }
-.zd_grad_r {
+.cover-gradient-right {
 	right: 0;
-	background: -webkit-linear-gradient(left, transparent, #000);
+	background: -webkit-linear-gradient(left, transparent, #222);
+	background: -moz-linear-gradient(left, transparent, #222);
+	background: -o-linear-gradient(left, transparent, #222);
+	background: -ms-linear-gradient(left, transparent, #222);
+	background: linear-gradient(left, transparent, #222);
 }

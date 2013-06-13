@@ -1,159 +1,123 @@
-;(function($){
-
+;(function($) {
 	var defaults = {
 		coverWidth: 400,
 		coverHeight: 400,
 		coverScale: .65,
 		currentIndex: 0,
 		betweenCovers: .1,
+		backgroundColor: "#000",
 		fromCenter: .35,
 		rotateDegree: 75,
-		fadeEdges: true,
-		allowClick: true
+		fadeEdges: false,
+		allowClick: true,
+		readyFn: null
 	};
-
-	$.fn.coverflow = function(options){
-
-		if(this.length > 1){
-			this.each(function(){
-				$(this).coverflow(options);
-			});
+	$.fn.coverflow = function(options) {
+		if (this.length > 1) {
+			var elements = [];
+			for (var i = 0; i < this.length; i++) {
+				elements.push(this.eq(i).coverflow(options));
+			}
+			return elements;
 		}
 
+		var _this = this;
 		$.extend(this, {
+			init: function(){
+				this.addClass("coverflow");
 
-			next: function(){
+				var imgs = this.children("img");
+				this.numCovers = imgs.length;
+				imgs.wrap("<div class='cover'>");
+				this.covers = this.children(".cover");
+
+				if (this.fadeEdges) {
+					this.append($("<div class='cover-gradient-left cover-gradient'>"),
+								$("<div class='cover-gradient-right cover-gradient'>"));
+				}
+
+				this.covers.css({
+					width: _this.coverWidth,
+					height: _this.coverHeight * 2,
+					"margin-top": _this.coverHeight / -2
+				});
+				this.backgroundCoverMarginTop = -_this.coverHeight * ((2 - this.coverScale) / 2);
+				this.draw();
+
+				this.attachClickHandlers();
+
+				this.find("img").each(function() {
+					this.onselectstart = this.ondragstart = function() { return false; };
+				});
+
+				return this;
+			},
+			attachClickHandlers: function() {
+				if (this.allowClick) {
+					this.on("click", "img", function() {
+						_this.toCover($(this).parent().index());
+					});
+				}
+			},
+			next: function() {
 				this.toCover(this.currentIndex + 1);
 			},
-
-			prev: function(){
+			prev: function() {
 				this.toCover(this.currentIndex - 1);
 			},
-
-			first: function(){
+			first: function() {
 				this.toCover(0);
 			},
-
-			last: function(){
-				this.toCover(this.data.len - 1);
+			last: function() {
+				this.toCover(this.numCovers - 1);
 			},
-
-			toCover: function(index){
-				if(index === this.currentIndex || index >= this.data.len || index < 0)
-					return;
+			toCover: function(index) {
+				if (index === this.currentIndex || index >= this.numCovers || index < 0) { return; }
 
 				this.currentIndex = index;
 				this.draw();
 			},
-
-			draw: function(){
-				var covers = this.find(".zd_cover"),
-						coverflow = this;
-
-				covers.filter(".active").removeClass("active").css({
-					"margin-top": this.coverHeight / -2 + this.data.skewE,
-					"width": this.data.skewW,
-					"height": this.data.skewH
-				});
-				covers.eq(this.currentIndex).addClass("active").css({
-					"margin-top": this.coverHeight / -2,
+			draw: function() {
+				this.covers.eq(this.currentIndex).css({
 					"margin-left": this.coverWidth / -2,
-					"width": this.coverWidth,
-					"height": this.coverHeight,
+					"margin-top": this.coverHeight / -2,
 					"webkit-transform": "rotateY(0)",
-					"z-index": this.data.len - this.currentIndex
+					"z-index": this.numCovers - this.currentIndex
 				});
-
-				covers.slice(0, this.currentIndex).each(function(i){
+				this.covers.slice(0, this.currentIndex).each(function(index) {
 					$(this).css({
-						"margin-left": coverflow.coverWidth * (-1 * coverflow.fromCenter - (coverflow.currentIndex - i - 1) * coverflow.betweenCovers) - coverflow.data.skewW,
-						"webkit-transform": "rotateY(" + coverflow.rotateDegree + "deg)",
+						"margin-left": _this.coverWidth * (-_this.fromCenter - (_this.currentIndex - index - 1)
+								* _this.betweenCovers - 1),
+						"margin-top": _this.backgroundCoverMarginTop,
+						"webkit-transform": "rotateY(" + _this.rotateDegree + "deg) scale(" + _this.coverScale + ")",
 						"z-index": 0
 					});
 				});
-				covers.slice(this.currentIndex + 1).each(function(i){
+				this.covers.slice(this.currentIndex + 1).each(function(index) {
 					$(this).css({
-						"margin-left": coverflow.coverWidth * (coverflow.fromCenter + coverflow.betweenCovers * i),
-						"webkit-transform": "rotateY(-" + coverflow.rotateDegree + "deg)",
-						"z-index": coverflow.data.len - coverflow.currentIndex - i - 1
+						"margin-left": _this.coverWidth * (_this.fromCenter + _this.betweenCovers * index),
+						"margin-top": _this.backgroundCoverMarginTop,
+						"webkit-transform": "rotateY(-" + _this.rotateDegree + "deg) scale(" + _this.coverScale + ")",
+						"z-index": _this.numCovers - _this.currentIndex - index - 1
 					});
 				});
 			},
-
-			init: function(){
-				var imgs = this.children("img"),
-						coverflow = this;
-
-				while(imgs.length){
-					var cover = $("<div>").append(imgs.eq(0).remove()).addClass("zd_cover");
-					this.append(cover);
-					imgs = imgs.slice(1);
-				}
-
-				var covers = this.find(".zd_cover");
-
-				this.data = {
-					len: covers.length,
-					skewE: (this.coverHeight - this.coverHeight * this.coverScale) / 2,
-					skewW: this.coverWidth * this.coverScale,
-					skewH: this.coverHeight * this.coverScale,
-				};
-				this.css("-webkit-perspective", 500);
-
-				if(this.fadeEdges){
-					var grad_l = $("<div>").addClass("zd_grad_l zd_grad").css({
-						"right": this.width() / 2 + (this.coverWidth / 2),
-						"z-index": this.data.len + 1
-					});
-					var grad_r = $("<div>").addClass("zd_grad_r zd_grad").css({
-						"left": this.width() / 2 + (this.coverWidth / 2),
-						"z-index": this.data.len + 1
-					});
-					this.append(grad_l, grad_r);
-				}
-
-				covers.splice(this.currentIndex, 1);
-				covers.each(function(index){
-					$(this).css({
-						"margin-top": coverflow.coverHeight / -2 + coverflow.data.skewE,
-						"width": coverflow.data.skewW,
-						"height": coverflow.data.skewH
-					});
-				});
-				this.draw();
-
-				if(this.allowClick)
-					this.find("img").click(function(){
-						coverflow.toCover($(this).parent().index(".zd_cover"));
-					});
-
-				this.find("img").each(function(){
-					coverflow.resizeImage($(this));
-					this.onselectstart = this.ondragstart = function(){ return false; };
-				});
-
-				return coverflow;
-			},
-
-			resizeImage: function(img){
-				if(img.width() / img.height() > this.coverWidth / this.coverHeight)
+			resizeImage: function(img) {
+				if (img.width() / img.height() > this.coverWidth / this.coverHeight) {
 					img.css({
-						"width": "100%",
-						"height": ""
+						width: "100%",
+						height: ""
 					});
-				else
+				} else {
 					img.css({
-						"width": "",
-						"height": "100%"
+						width: "",
+						height: "100%"
 					});
+				}
 			}
-
 		});
 
 		$.extend(this, defaults, options);
-
-		return this.init();
-
+		this.init();
 	}
-
 })(jQuery);
