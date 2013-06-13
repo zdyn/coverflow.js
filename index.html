@@ -17,12 +17,8 @@
 			<img src="cover6.jpg" />
 		</div>
 		<script>
-			$("#coverflow").coverflow({
-				coverWidth: 300,
-				coverHeight: 300,
-				readyFn: function() {
-					$("#coverflow").show();
-				}
+			window.coverflow = $("#coverflow").coverflow({
+				backgroundColor: "#1a1a1a"
 			});
 		</script>
 	</body>

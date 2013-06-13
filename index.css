@@ -3,7 +3,6 @@ html, body {
 	width: 100%;
 	margin: 0;
 	padding: 0;
-  background: #1b1b1b;
 }
 #coverflow {
   position: absolute;
@@ -11,4 +10,6 @@ html, body {
   width: 100%;
 	height: 600px;
   margin-top: -300px;
+  background: #1a1a1a;
+  box-shadow: 0 0 5px #000;
 }
