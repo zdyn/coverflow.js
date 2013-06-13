@@ -1,15 +1,17 @@
 ;(function($) {
 	var defaults = {
-		coverWidth: 400,
-		coverHeight: 400,
-		coverScale: .65,
+		coverWidth: 300,
+		coverHeight: 300,
+		backgroundCoverScale: .8,
 		currentIndex: 0,
-		betweenCovers: .1,
+		fromCenter: .2,
+		betweenCovers: .2,
 		backgroundColor: "#000",
-		fromCenter: .35,
-		rotateDegree: 75,
+		rotateDegree: 60,
 		fadeEdges: false,
 		allowClick: true,
+		allowSwipe: true,
+		changeFn: null,
 		readyFn: null
 	};
 	$.fn.coverflow = function(options) {
@@ -27,78 +29,93 @@
 				this.addClass("coverflow");
 
 				var imgs = this.children("img");
+				imgs.each(function() { this.onselectstart = this.ondragstart = function() { return false; }});
 				this.numCovers = imgs.length;
 				imgs.wrap("<div class='cover'>");
 				this.covers = this.children(".cover");
 
 				if (this.fadeEdges) {
-					this.append($("<div class='cover-gradient-left cover-gradient'>"),
-								$("<div class='cover-gradient-right cover-gradient'>"));
+					this.append($("<div class='cover-gradient'>").css("backgroundColor", this.backgroundColor));
 				}
 
 				this.covers.css({
 					width: _this.coverWidth,
 					height: _this.coverHeight * 2,
-					"margin-top": _this.coverHeight / -2
+					marginTop: _this.coverHeight / -2,
+					backgroundColor: this.backgroundColor
 				});
-				this.backgroundCoverMarginTop = -_this.coverHeight * ((2 - this.coverScale) / 2);
+				this.backgroundCoverMarginTop = -_this.coverHeight * ((2 - this.backgroundCoverScale) / 2);
 				this.draw();
 
 				this.attachClickHandlers();
 
-				this.find("img").each(function() {
-					this.onselectstart = this.ondragstart = function() { return false; };
-				});
-
-				return this;
+				if (this.readyFn) { this.readyFn(); }
 			},
 			attachClickHandlers: function() {
 				if (this.allowClick) {
 					this.on("click", "img", function() {
-						_this.toCover($(this).parent().index());
+						_this.toIndex($(this).parent().index());
 					});
+				}
+				if (this.allowSwipe) {
+					this.on({
+						mousedown: function(e) {
+							var startX = e.pageX;
+							$(this).on("mousemove", function(e) {
+								var change = ~~((startX - e.pageX) / (_this.width() * 0.75) * _this.numCovers);
+								if (change) {
+									_this.toIndex(_this.currentIndex + change);
+									startX = e.pageX;
+								}
+							});
+						},
+						mouseup: function() { $(this).off("mousemove"); },
+						mouseleave: function() { $(this).off("mousemove"); }
+					})
 				}
 			},
 			next: function() {
-				this.toCover(this.currentIndex + 1);
+				this.toIndex(this.currentIndex + 1);
 			},
 			prev: function() {
-				this.toCover(this.currentIndex - 1);
+				this.toIndex(this.currentIndex - 1);
 			},
 			first: function() {
-				this.toCover(0);
+				this.toIndex(0);
 			},
 			last: function() {
-				this.toCover(this.numCovers - 1);
+				this.toIndex(this.numCovers - 1);
 			},
-			toCover: function(index) {
+			toIndex: function(index) {
 				if (index === this.currentIndex || index >= this.numCovers || index < 0) { return; }
+
+				if (this.changeFn) { this.changeFn(this.currentIndex); }
 
 				this.currentIndex = index;
 				this.draw();
 			},
 			draw: function() {
 				this.covers.eq(this.currentIndex).css({
-					"margin-left": this.coverWidth / -2,
-					"margin-top": this.coverHeight / -2,
-					"webkit-transform": "rotateY(0)",
-					"z-index": this.numCovers - this.currentIndex
+					marginLeft: this.coverWidth / -2,
+					marginTop: this.coverHeight / -2,
+					webkitTransform: "rotateY(0)",
+					zIndex: this.numCovers - this.currentIndex
 				});
 				this.covers.slice(0, this.currentIndex).each(function(index) {
 					$(this).css({
-						"margin-left": _this.coverWidth * (-_this.fromCenter - (_this.currentIndex - index - 1)
+						marginLeft: _this.coverWidth * (-_this.fromCenter - (_this.currentIndex - index - 1)
 								* _this.betweenCovers - 1),
-						"margin-top": _this.backgroundCoverMarginTop,
-						"webkit-transform": "rotateY(" + _this.rotateDegree + "deg) scale(" + _this.coverScale + ")",
-						"z-index": 0
+						marginTop: _this.backgroundCoverMarginTop,
+						webkitTransform: "rotateY(" + _this.rotateDegree + "deg) scale(" + _this.backgroundCoverScale + ")",
+						zIndex: 0
 					});
 				});
 				this.covers.slice(this.currentIndex + 1).each(function(index) {
 					$(this).css({
-						"margin-left": _this.coverWidth * (_this.fromCenter + _this.betweenCovers * index),
-						"margin-top": _this.backgroundCoverMarginTop,
-						"webkit-transform": "rotateY(-" + _this.rotateDegree + "deg) scale(" + _this.coverScale + ")",
-						"z-index": _this.numCovers - _this.currentIndex - index - 1
+						marginLeft: _this.coverWidth * (_this.fromCenter + _this.betweenCovers * index),
+						marginTop: _this.backgroundCoverMarginTop,
+						webkitTransform: "rotateY(-" + _this.rotateDegree + "deg) scale(" + _this.backgroundCoverScale + ")",
+						zIndex: _this.numCovers - _this.currentIndex - index - 1
 					});
 				});
 			},
@@ -115,9 +132,16 @@
 					});
 				}
 			}
-		});
-
-		$.extend(this, defaults, options);
+		}, defaults, options);
 		this.init();
+
+		var api = {};
+		var fns = ["next", "prev", "first", "last", "toIndex"];
+		for (var i = 0; i < fns.length; i++) {
+			api[fns[i]] = (function(fn) {
+				return function() { _this[fn].apply(_this, Array.prototype.slice.call(arguments)); }
+			})(fns[i]);
+		}
+		return api;
 	}
 })(jQuery);
