@@ -1,6 +1,6 @@
 # Coverflow
 
-A jQuery plugin that allows you to display images in a coverflow. Currently works only in webkit browsers. An demo of the plugin in action is available at http://zdyn.github.com/coverflow/.
+A jQuery plugin that allows you to display images in a coverflow. Currently works only in webkit browsers. An demo of the plugin in action is available at http://zdyn.github.com/coverflow.js.
 
 ## Prerequisites
 
@@ -11,7 +11,7 @@ jQuery 1.7
 Initialize the coverflow. This must be done inside `$(window).load`:
 
     $(window).load(function(){
-      $('#div').coverflow();
+      $("#div").coverflow();
     });
 
 The following functions are provided if you want to navigate the coverflow in your own JavaScript code:
@@ -23,7 +23,7 @@ The following functions are provided if you want to navigate the coverflow in yo
 
 Use them by first assigning the coverflow call to your own variable and then calling the functions. For example:
 
-    var coverflow = $('#div').coverflow();
+    var coverflow = $("#div").coverflow();
     coverflow.next();
 
 ## Options
@@ -42,7 +42,7 @@ Use them by first assigning the coverflow call to your own variable and then cal
 
 Override the default options by passing in the parameters you wish to change in an object. For example:
 
-    $('#div').coverflow({
+    $("#div").coverflow({
       coverWidth: 600,
       coverHeight: 600
     });
