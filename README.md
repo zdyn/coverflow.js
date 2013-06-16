@@ -71,3 +71,7 @@ var coverflow = $("#container").coverflow({
 ## Known issues
 
 * Under certain configurations, click navigation for the first background covers on each side are broken
+
+## License
+
+[MIT](http://www.opensource.org/licenses/mit-license.php)
